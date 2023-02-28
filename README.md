@@ -1,2 +1,2 @@
-# aws-infra
+# aws_infra
 Learn aws infrastructure
