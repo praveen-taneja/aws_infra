@@ -71,11 +71,22 @@ def test(dataloader, model, loss_fn):
         test_loss = test_loss/num_batches
         print(f"Test avg loss = {test_loss}")
 
+def model_predict(model, x):
+
+    #predict
+    model.eval()
+    #x, y = test_data[0][0], test_data[0][1]
+    with torch.no_grad():
+        pred = model(x)
+        return CLASSES[pred[0].argmax(0)]
+        #predicted, actual = CLASSES[pred[0].argmax(0)], CLASSES[y]
+        #print(f"Predicted = {predicted}, Actual = {actual}")
+
 if __name__ == "__main__":
 
     BATCH_SIZE = 64
     LEARNING_RATE = 1e-3
-    NUM_EPOCHS = 1
+    NUM_EPOCHS = 5
     CLASSES = [
         "T-shirt/top",
         "Trouser",
@@ -118,10 +129,8 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load(save_model_path))
 
     #predict
-    model.eval()
     x, y = test_data[0][0], test_data[0][1]
-    with torch.no_grad():
-        pred = model(x)
-        predicted, actual = CLASSES[pred[0].argmax(0)], CLASSES[y]
-        print(f"Predicted = {predicted}, Actual = {actual}")
-
+    predicted = model_predict(model, x)
+    actual = CLASSES[y]
+    print(f"predicted = {predicted}")
+    print(f"actual = {actual}")
